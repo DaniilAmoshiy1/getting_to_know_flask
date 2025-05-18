@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Flask_table</title>
+        <link rel="stylesheet" href="/static/css/styles.css">
+    </head>
+    <body>
+        <h1>Categories</h1>
+        <table border="1">
+            <tr>
+                <th>:)</th>
+                {% for _, name in categories.items() %}
+                    <th> {{ name }} </th>
+                {% endfor %}
+            </tr>
+        </table>
+    </body>
+</html>
