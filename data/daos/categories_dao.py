@@ -10,8 +10,12 @@ class CategoriesDao:
 
     def create_category(self, category_name: str, description: Optional[str] = None):
         new_category = Categories(category_name=category_name, description=description)
-        self.session.add(new_category)
-        self.session.commit()
+        try:
+            self.session.add(new_category)
+            self.session.commit()
+        except Exception as add_error:
+            self.session.rollback()
+            error = f'There was an error adding: {add_error}'
 
     def read_categories(self):
         return self.session.query(Categories).all()

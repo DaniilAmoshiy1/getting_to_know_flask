@@ -1,6 +1,7 @@
 table {
-    width: 100%;
+    width: 70%;
     border-collapse: collapse;
+    margin: auto;
 }
 th, td {
     border: 1px solid #ddd;
@@ -16,4 +17,11 @@ tr:nth-child(even) {
 }
 tr:hover {
     background-color: #f1f1f1;
+}
+h1 {
+    text-align: center;
+}
+a {
+    display: block;
+    text-align: center;
 }

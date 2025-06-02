@@ -8,12 +8,14 @@ class EmployeesDao:
     def __init__(self, session=CafeSession.get_session()):
         self.session = session
 
-    def add_employee(self, employee_name, role, mail, phone_number):
+    def add_employee(self, employee_name, role, mail, phone_number, username, password):
         new_employee = Employees(
             employee_name=employee_name,
             role=role,
             mail=mail,
-            phone_number=phone_number
+            phone_number=phone_number,
+            username=username,
+            password=password
         )
         self.session.add(new_employee)
         self.session.commit()

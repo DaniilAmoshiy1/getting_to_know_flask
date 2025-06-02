@@ -23,8 +23,12 @@ class DishesDao:
             price=price,
             category_id=category_id
         )
-        self.session.add(new_dish)
-        self.session.commit()
+        try:
+            self.session.add(new_dish)
+            self.session.commit()
+        except Exception as add_error:
+            self.session.rollback()
+            error = f'There was an error adding: {add_error}'
 
     def get_all_dishes(self):
         return self.session.query(Dishes).all()

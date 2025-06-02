@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Dishes</title>
+        <link rel="stylesheet" href="/static/styles/categories.css">
+    </head>
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>Dish id</th>
+                    <th>Dish name</th>
+                    <th>Description</th>
+                    <th>photo</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for keys, values in dishes.items() %}
+                <tr>
+                    <td>{{ keys }}</td>
+                    <td>{{ values[0] }}</td>
+                    <td>{{ values[1] }}</td>
+                    <td>{{ values[2] }}</td>
+                    <td>{{ values[3] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>
