@@ -1,49 +1,64 @@
-from flask import request, session, redirect, url_for, render_template
-from flask_login import LoginManager
+from config import request, session,render_template, Blueprint, app, get_data_from_db
 
-from main import app
 from data.db_utilities.session import CafeSession
 from data.datamodel.employees import Employees
-from data.daos.employees_dao import EmployeesDao
+
+
+bp = Blueprint('flask_security', __name__)
 
 app.secret_key = 'key'
-print('Login manager not created')
-login_manager = LoginManager()
-print('Login manager created')
-login_manager.init_app(app)
-
 
 # Login
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    username = request.form(['username'])
-    password = request.form(['password'])
+    username = request.form.get('username')
+    password = request.form.get('password')
     db_session = CafeSession.get_session()
     check_user = db_session.query(Employees).filter_by(username=username).first()
+
+    categories, _, _, _, = get_data_from_db()
     if check_user and check_user.check_password(password):
         session['username'] = username
-        return redirect(url_for('control_panel'))
+        return render_template('control_panel.html', categories=categories)
     else:
         return render_template('login.html')
 
 # register
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    full_name = request.form(['full_name'])
+    if request.method == 'GET':
+        return render_template('register.html')
+
+    full_name = request.form.get('full_name')
     role = None
-    user_mail = request.form(['user_mail'])
-    phone_number = request.form(['phone_number'])
-    username = request.form(['username'])
-    password = request.form(['password'])
-    EmployeesDao.add_employee(
-        full_name,
-        role,
-        user_mail,
-        phone_number,
-        username,
-        password
+    user_mail = request.form.get('user_mail')
+    phone_number = request.form.get('phone_number')
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if not password:
+        return render_template('register.html', error='Error: Password not transmitted!')
+
+    db_session = CafeSession.get_session()
+    check_user = db_session.query(Employees).filter_by(username=username).first()
+    if check_user:
+        return render_template('register.html', error='The user already exists')
+
+    new_employee = Employees(
+        employee_name=full_name,
+        role=role,
+        mail=user_mail,
+        phone_number=phone_number,
+        username=username
     )
+    new_employee.set_password(password)
+
+    db_session.add(new_employee)
+    db_session.commit()
+    db_session.close()
+
     return render_template('login.html')
+
 
 # logout
 

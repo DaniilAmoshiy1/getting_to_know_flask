@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Flask_tables_admin</title>
+        <link rel="stylesheet" href="/static/styles/categories.css">
+    </head>
+    <body>
+        <h1>Categories</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Order of numbers</th>
+                    <th>Categories name</th>
+                    <th>Categories description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for keys, values in categories.items() %}
+                <tr>
+                    <td>{{ keys }}</td>
+                    <td>
+                        <form action="/get_dishes" method="GET">
+                            <input type="hidden" name="find_dishes" value="{{ values[0] }}">
+                            <button type="submit">{{ values[0] }}</button>
+                        </form>
+                    </td>
+                    <td>{{ values[1] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="/">Return to navigation</a>
+    </body>
+</html>

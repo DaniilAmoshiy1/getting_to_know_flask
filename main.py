@@ -1,43 +1,20 @@
-from flask import Flask, Request, render_template, request
+from config import render_template, request, app, get_data_from_db
 
-from data.db_utilities.session import CafeSession
-from data.datamodel.categories import Categories
-from data.datamodel.dishes import Dishes
-from data.datamodel.employees import Employees
-from data.datamodel.availability import Availability
 from data.db_utilities.setup import setup_db, reset_db
 from data.daos.categories_dao import CategoriesDao
 from data.daos.dishes_dao import DishesDao
+from flask_security import bp
 
 
-app = Flask(__name__)
+app.register_blueprint(bp)
 
-def get_data_from_db():
-    with CafeSession.get_session() as session:
-        categories_db = session.query(Categories).all()
-        categories = {category.id: [category.category_name, category.description] for category in categories_db}
-        dishes_db = session.query(Dishes).all()
-        dishes = {
-            dishes.id: [
-                dishes.dish_name,
-                dishes.description,
-                dishes.photo,
-                dishes.price,
-                dishes.category_id
-            ] for dishes in dishes_db
-        }
-        employees = session.query(Employees).all()
-        availability = session.query(Availability).all()
-    return categories, dishes, employees, availability
-
-
-@app.route('/')
+@app.route('/', methods=['GET'])
 def get_links():
     reset_db()
     setup_db()
     return render_template('main_links.html')
 
-@app.route('/categories')
+@app.route('/categories', methods=['GET'])
 def get_categories():
     new_category = CategoriesDao()
     new_category.create_category('First category', 'Kva')
@@ -53,8 +30,8 @@ def get_dishes():
     new_dishes = DishesDao()
     new_dishes.add_dish('Жареные яйца', None, 2000, 1, 'Это вкусно, купите')
     new_dishes.add_dish('Сырая курица', None, 2000, 2, 'Это вкусно, купите')
-    new_dishes.add_dish('Попа кота', None, 2000, 1, 'Это вкусно, купите')
-    new_dishes.add_dish('Хвост кобылы', None, 2000, 2, 'Это вкусно, купите')
+    new_dishes.add_dish('Говядина', None, 2000, 1, 'Это вкусно, купите')
+    new_dishes.add_dish('Кто то ещё', None, 2000, 2, 'Это вкусно, купите')
     find_dishes = request.args.get('find_dishes')
     print(find_dishes)
     categories, dishes, _, _, = get_data_from_db()

@@ -4,7 +4,7 @@ This file is for future features
 from PIL import Image
 import io
 
-
+image_path = 'images/1a3c9412b917b5dbf65e03eb7ed4e787.jpg'
 def image_to_bytes(image_path):
     with Image.open(image_path) as img:
         img_byte_arr = io.BytesIO()
@@ -12,8 +12,6 @@ def image_to_bytes(image_path):
         img_byte_arr = img_byte_arr.getvalue()
     return img_byte_arr
 
-
-image_path = 'images/1a3c9412b917b5dbf65e03eb7ed4e787.jpg'
 image_bytes = image_to_bytes(image_path)
 
 
