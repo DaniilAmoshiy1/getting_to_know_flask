@@ -8,10 +8,10 @@ from flask_security import bp
 
 app.register_blueprint(bp)
 
+setup_db()
+
 @app.route('/', methods=['GET'])
 def get_links():
-    reset_db()
-    setup_db()
     return render_template('main_links.html')
 
 @app.route('/categories', methods=['GET'])

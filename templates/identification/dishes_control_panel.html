@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Edit dishes</title>
+        <link rel="stylesheet" href="/static/styles/categories.css">
+    </head>
+    <body>
+        <h1>Редактирование блюд</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Dish id</th>
+                    <th>Dish name</th>
+                    <th>Description</th>
+                    <th>Photo</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for keys, values in dishes.items() %}
+                <tr>
+                    <td>{{ keys }}</td>
+                    <td>{{ values[0] }}</td>
+                    <td>{{ values[1] }}</td>
+                    <td>
+                        {% if values[2] %}
+                            <img src="data:image/png;base64,{{ values[2] }}" alt="Dish Image" width="100">
+                        {% endif %}
+                        <form action="/upload_image" method="post" enctype="multipart/form-data">
+                            <input type="file" name="photo" accept="image/*">
+                            <input type="hidden" name="dish_id" value="{{ keys }}">
+                            <button type="submit">Confirm</button>
+                        </form>
+                    </td>
+                    <td>{{ values[3] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="/categories_control_panel">Return to categories (control panel)</a>
+    </body>
+</html>
