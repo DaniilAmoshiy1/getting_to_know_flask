@@ -1,10 +1,11 @@
 from functools import wraps
 
-from config import request, session,render_template, Blueprint, app, get_data_from_db
+from config import request, session,render_template, Blueprint, app, get_data_from_db, redirect, url_for
 
 from data.db_utilities.session import CafeSession
 from data.datamodel.employees import Employees
 from data.daos.dishes_dao import DishesDao
+from data.db_utilities.conversion_image import image_to_bytes
 
 
 bp = Blueprint('flask_security', __name__)
@@ -102,3 +103,15 @@ def dishes_control_panel():
             dishes_list = dish_dao.get_dishes_by_category_id(key)
             dishes_dict = {dish.id: [dish.dish_name, dish.description, dish.photo, dish.price] for dish in dishes_list}
             return render_template('identification/dishes_control_panel.html', dishes=dishes_dict)
+
+@app.route('/upload_image', methods=['POST'])
+@login_required
+def upload_image():
+    image = request.files.get('photo')
+    dish_id = request.form.get('dish_id')
+
+    if not image:
+        return 'Error, file not upload', 400
+    image_to_bytes(image, dish_id)
+    return redirect(url_for('categories_control_panel'))
+
