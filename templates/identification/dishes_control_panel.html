@@ -25,7 +25,7 @@
                     <td>{{ values[1] }}</td>
                     <td>
                         {% if values[2] %}
-                            <img src="data:image/png;base64,{{ values[2] }}" alt="Dish Image" width="100">
+                            <img src="{{ values[2] }}" alt="Dish Image" width="150">
                         {% endif %}
                         <form action="/upload_image" method="post" enctype="multipart/form-data">
                             <input type="file" name="photo" accept="image/*">

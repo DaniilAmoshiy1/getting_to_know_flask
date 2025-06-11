@@ -1,11 +1,13 @@
 from functools import wraps
+import os
+
+from sqlalchemy.testing.provision import update_db_opts
 
 from config import request, session,render_template, Blueprint, app, get_data_from_db, redirect, url_for
 
 from data.db_utilities.session import CafeSession
 from data.datamodel.employees import Employees
 from data.daos.dishes_dao import DishesDao
-from data.db_utilities.conversion_image import image_to_bytes
 
 
 bp = Blueprint('flask_security', __name__)
@@ -109,9 +111,19 @@ def dishes_control_panel():
 def upload_image():
     image = request.files.get('photo')
     dish_id = request.form.get('dish_id')
+    image_folder = os.path.join('static', 'dish_images')
+
+    if not os.path.exists(image_folder):
+        os.makedirs(image_folder)
+
+    image_path = os.path.join(image_folder, f'{dish_id}.png')
+    image.save(image_path)
 
     if not image:
         return 'Error, file not upload', 400
-    image_to_bytes(image, dish_id)
+
+    update_dish = DishesDao()
+    update_dish.update_dish(dish_id=dish_id, photo=image_path)
+
     return redirect(url_for('categories_control_panel'))
 

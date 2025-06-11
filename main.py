@@ -33,7 +33,6 @@ def get_dishes():
     new_dishes.add_dish('Говядина', None, 2000, 1, 'Это вкусно, купите')
     new_dishes.add_dish('Кто то ещё', None, 2000, 2, 'Это вкусно, купите')
     find_dishes = request.args.get('find_dishes')
-    print(find_dishes)
     categories, dishes, _, _, = get_data_from_db()
     key = [key for key, value in categories.items() if value[0] == find_dishes]
     for number in key:
@@ -42,10 +41,8 @@ def get_dishes():
         if key == values[4]:
             dishes_list = new_dishes.get_dishes_by_category_id(key)
             dishes_dict = {dish.id: [dish.dish_name, dish.description, dish.photo, dish.price] for dish in dishes_list}
-            # print(f'Dishes list = {dishes_list}')
-            # print(f'Dishes dict = {dishes_dict}')
             return render_template('dishes.html', dishes=dishes_dict)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)

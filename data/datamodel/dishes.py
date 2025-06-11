@@ -10,7 +10,7 @@ class Dishes(SqlAlchemyBase):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     dish_name: Mapped[str] = mapped_column(nullable=False, unique=True)
     description: Mapped[str] = mapped_column(nullable=True)
-    photo: Mapped[bytes] = mapped_column(LargeBinary, nullable=True)
+    photo: Mapped[str] = mapped_column(nullable=True)
     price: Mapped[float] = mapped_column(nullable=False)
     category_id: Mapped[int] = mapped_column(ForeignKey('categories.id'))
 

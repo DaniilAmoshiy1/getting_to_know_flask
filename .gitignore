@@ -169,3 +169,7 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Images for page
+static/dish_images/*
+!static/dish_images/.gitkeep

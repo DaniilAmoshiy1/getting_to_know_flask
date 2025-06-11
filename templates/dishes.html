@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Dishes</title>
         <link rel="stylesheet" href="/static/styles/categories.css">
     </head>
@@ -22,7 +23,10 @@
                     <td>{{ keys }}</td>
                     <td>{{ values[0] }}</td>
                     <td>{{ values[1] }}</td>
-                    <td>{{ values[2] }}</td>
+                    <td>
+                        {% if values[2] %}
+                            <img src="{{ values[2] }}" alt="Dish Image" width="300">
+                        {% endif %}</td>
                     <td>{{ values[3] }}</td>
                 </tr>
             {% endfor %}
