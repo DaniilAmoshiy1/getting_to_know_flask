@@ -14,9 +14,19 @@ bp = Blueprint('flask_security', __name__)
 
 app.secret_key = 'key'
 
+def login_required(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in session:
+            return render_template('identification/login.html', error='You must log in for accept access')
+        return func(*args, **kwargs)
+    return decorated_function
+
 # Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if 'username' in session:
+        return redirect(url_for('categories_control_panel'))
     username = request.form.get('username')
     password = request.form.get('password')
     db_session = CafeSession.get_session()
@@ -66,21 +76,12 @@ def register():
 
     return render_template('identification/login.html')
 
-
 # logout
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return render_template('identification/login.html')
 
-
-def login_required(func):
-    @wraps(func)
-    def decorated_function(*args, **kwargs):
-        if 'username' not in session:
-            return render_template('identification/login.html', error='You must log in for accept access')
-        return func(*args, **kwargs)
-    return decorated_function
 
 @app.route('/categories_control_panel')
 @login_required
