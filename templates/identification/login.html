@@ -6,4 +6,7 @@
         <a href="/register">Register</a>
     </form>
     <a href="/">Return to navigation</a>
+    {% if error %}
+        <h1>Error: {{ error }}</h1>
+    {% endif %}
 {% endblock %}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Edit dishes</title>
+        <link rel="stylesheet" href="/static/styles.css">
+    </head>
+    <body>
+    <h1>Edit employees</h1>
+    <form action="/employees_control_panel" method="POST">
+        <table>
+            <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for keys, values in employees.items() %}
+                <tr>
+                    <td>{{ keys }}</td>
+                    <td>{{ values[0] }}</td>
+                    <td>
+                        His role now = {{ values[1] }}
+                        <input type="hidden" name="employee_ids" value="{{ keys }}">
+                        <select name="role_{{ keys }}">
+                            {% for role in roles %}
+                                <option value="{{ role }}" {% if role == values[1] %}selected{% endif %}>{{ role }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>{{ values[2] }}</td>
+                    <td>{{ values[3] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Submit</button>
+    </form>
+    <a href="/">Return to categories</a>
+    </body>
+</html>

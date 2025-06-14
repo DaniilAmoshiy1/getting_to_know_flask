@@ -32,6 +32,14 @@ def get_data_from_db():
                 dishes.category_id
             ] for dishes in dishes_db
         }
-        employees = sess.query(Employees).all()
+        employees_db = sess.query(Employees).all()
+        employees = {
+            employees.id: [
+                employees.employee_name,
+                employees.role,
+                employees.mail,
+                employees.phone_number
+            ] for employees in employees_db
+        }
         availability = sess.query(Availability).all()
     return categories, dishes, employees, availability

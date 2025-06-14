@@ -8,11 +8,13 @@ from config import request, session,render_template, Blueprint, app, get_data_fr
 from data.db_utilities.session import CafeSession
 from data.datamodel.employees import Employees
 from data.daos.dishes_dao import DishesDao
+from data.daos.employees_dao import EmployeesDao
 
 
 bp = Blueprint('flask_security', __name__)
 
 app.secret_key = 'key'
+roles = ['Owner', 'Administrator', 'Manager', 'Accountant', 'HR-Manager']
 
 def login_required(func):
     @wraps(func)
@@ -25,6 +27,9 @@ def login_required(func):
 # Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if session.get('username') == 'Roman Voronov':
+        return redirect(url_for('employees_control_panel'))
+    print(session)
     if 'username' in session:
         return redirect(url_for('categories_control_panel'))
     username = request.form.get('username')
@@ -80,6 +85,7 @@ def register():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
+    session.pop('role', None)
     return render_template('identification/login.html')
 
 
@@ -127,4 +133,22 @@ def upload_image():
     update_dish.update_dish(dish_id=dish_id, photo=image_path)
 
     return redirect(url_for('categories_control_panel'))
+
+@app.route('/employees_control_panel', methods=['GET', 'POST'])
+@login_required
+def employees_control_panel():
+    _, _, employees, _, = get_data_from_db()
+    if request.method == 'POST':
+        edit_employee = EmployeesDao()
+        employees_id = request.form.getlist('employee_ids')
+        for employee_id in employees_id:
+            new_role = request.form.get(f'role_{employee_id}')
+            if new_role:
+                edit_employee.update_employee(employee_id=employee_id, role=new_role)
+
+    if session.get('username') == 'Roman Voronov':
+        return render_template('identification/employees_control_panel.html', employees=employees, roles=roles)
+    else:
+        error = 'You do not have access for this page'
+        return render_template('identification/login.html', error=error)
 
