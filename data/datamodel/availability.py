@@ -1,10 +1,9 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import ForeignKey
 
 from .model_base import SqlAlchemyBase
-
 
 class Availability(SqlAlchemyBase):
     __tablename__ = 'availability'
@@ -13,4 +12,4 @@ class Availability(SqlAlchemyBase):
     is_active: Mapped[bool] = mapped_column(nullable=False, default=True)
     dish_id: Mapped[int] = mapped_column(ForeignKey('dishes.id'), nullable=False)
     user_id: Mapped[int] = mapped_column(ForeignKey('employees.id'), nullable=False)
-    change_date: Mapped[datetime] = mapped_column(nullable=False)
+    change_date: Mapped[datetime] = mapped_column(nullable=False, default=lambda: datetime.now(timezone.utc))

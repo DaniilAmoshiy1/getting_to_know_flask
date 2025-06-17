@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import LargeBinary, CheckConstraint, ForeignKey
+from sqlalchemy import CheckConstraint, ForeignKey
 
 from .model_base import SqlAlchemyBase
 

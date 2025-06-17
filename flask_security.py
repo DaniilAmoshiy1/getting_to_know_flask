@@ -1,13 +1,11 @@
 from functools import wraps
 import os
 
-from sqlalchemy.testing.provision import update_db_opts
-
 from config import request, session,render_template, Blueprint, app, get_data_from_db, redirect, url_for
 
 from data.db_utilities.session import CafeSession
-from data.datamodel.employees import Employees
 from data.daos.dishes_dao import DishesDao
+from data.datamodel.employees import Employees
 from data.daos.employees_dao import EmployeesDao
 
 
@@ -152,3 +150,8 @@ def employees_control_panel():
         error = 'You do not have access for this page'
         return render_template('identification/login.html', error=error)
 
+@app.route('/availability_control_panel', methods=['GET', 'POST'])
+@login_required
+def availability_control_panel():
+    _, _, _, availability = get_data_from_db()
+    return render_template('identification/availability_control_panel.html', availability=availability)

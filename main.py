@@ -8,6 +8,7 @@ from flask_security import bp
 
 app.register_blueprint(bp)
 
+reset_db()
 setup_db()
 
 @app.route('/', methods=['GET'])

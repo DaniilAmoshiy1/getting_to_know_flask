@@ -41,5 +41,13 @@ def get_data_from_db():
                 employees.phone_number
             ] for employees in employees_db
         }
-        availability = sess.query(Availability).all()
+        availability_db = sess.query(Availability).all()
+        availability = {
+            availability.id: [
+                availability.is_active,
+                availability.dish_id,
+                availability.user_id,
+                availability.change_date
+            ] for availability in availability_db
+        }
     return categories, dishes, employees, availability

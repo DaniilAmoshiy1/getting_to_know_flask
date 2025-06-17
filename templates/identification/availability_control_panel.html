@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Edit availability</title>
+        <link rel="stylesheet" href="/static/styles.css">
+    </head>
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>Availability id</th>
+                    <th>Is active</th>
+                    <th>Dish id</th>
+                    <th>User id</th>
+                    <th>Change date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for keys, values in availability.items() %}
+                    <tr>
+                        <td>{{ keys }}</td>
+                        <td>{{ values[0] }}</td>
+                        <td>{{ values[1] }}</td>
+                        <td>{{ values[2] }}</td>
+                        <td>{{ values[3] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>

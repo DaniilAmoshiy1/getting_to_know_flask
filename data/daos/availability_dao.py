@@ -54,3 +54,6 @@ class AvailabilityDao:
             self.session.commit()
         else:
             raise ValueError(f'{availability_id} does not exist in this table')
+
+test1 = AvailabilityDao()
+test1.create_availability(True, 1, 1) # There was a problem here, urgently sending a commit to GitHub

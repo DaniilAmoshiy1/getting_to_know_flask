@@ -8,3 +8,5 @@ def reset_db():
 
 def setup_db():
     SqlAlchemyBase.metadata.create_all(CafeSession.engine)
+
+reset_db()
